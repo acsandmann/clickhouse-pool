@@ -1,15 +1,13 @@
 use clickhouse::error::Error as ClickhouseError;
-use std::{
-    error::Error as StdError,
-    fmt::{self, Display, Formatter},
-};
+use std::error::Error as StdError;
+use std::fmt::{self, Display, Formatter};
 use tokio::sync::AcquireError;
 
 /// Represents errors that can occur in the connection pool.
 #[derive(Debug)]
 pub enum Error {
     /// Error occurred while acquiring a semaphore permit.
-    AcquireError,
+    Acquire,
     /// Error occurred while creating or connecting the ClickHouse client.
     Clickhouse(ClickhouseError),
     /// An unknown error occurred.
@@ -24,14 +22,14 @@ impl From<ClickhouseError> for Error {
 
 impl From<AcquireError> for Error {
     fn from(_err: AcquireError) -> Self {
-        Error::AcquireError
+        Error::Acquire
     }
 }
 
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
-            Error::AcquireError => write!(f, "Failed to acquire a semaphore permit"),
+            Error::Acquire => write!(f, "Failed to acquire a semaphore permit"),
             Error::Clickhouse(err) => write!(f, "ClickHouse error: {}", err),
             Error::Unknown => write!(f, "An unknown error occurred"),
         }

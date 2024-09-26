@@ -134,12 +134,8 @@ mod tests {
         let client2 = pool.acquire().await.expect("Failed to acquire client 2");
 
         let pool_clone = pool.clone();
-        let acquire_future = tokio::spawn(async move {
-            pool_clone
-                .acquire()
-                .await
-                .expect("Failed to acquire client 3")
-        });
+        let acquire_future =
+            tokio::spawn(async move { pool_clone.acquire().await.expect("Failed to acquire client 3") });
 
         drop(client1);
 
@@ -148,7 +144,7 @@ mod tests {
         drop(client2);
         drop(client3);
     }
-    
+
     #[tokio::test]
     async fn test_concurrent_acquisitions() {
         let pool_size = 5;
