@@ -1,4 +1,4 @@
-# clickhouse-rs
+# clickhouse-pool
 
 An efficient, asynchronous connection pool for ClickHouse, built upon the [official ClickHouse Rust client](https://github.com/ClickHouse/clickhouse-rs).
 
